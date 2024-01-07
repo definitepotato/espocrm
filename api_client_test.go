@@ -5,19 +5,6 @@ import (
 	"testing"
 )
 
-type Accounts struct {
-	List  []Account `json:"list"`
-	Total int       `json:"total"`
-}
-
-type Account struct {
-	Id           string `json:"id"`
-	Name         string `json:"name"`
-	Registration string `json:"registration"`
-	Client       string `json:"client"`
-	BatchId      string `json:"batchID"`
-}
-
 func TestNewApiClient(t *testing.T) {
 	t.Run("new api client with api key", func(t *testing.T) {
 		url := os.Getenv("GOESPOCRM_URL")
