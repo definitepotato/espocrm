@@ -1,7 +1,5 @@
 package espocrm
 
-// f'{self.url}{self.api_path}{entity}?offset={offset}&maxSize=200&where[0][type]={self.type}&where[0][attribute]={attribute}&where[0][value]={value}',
-
 type Order string
 
 const (
