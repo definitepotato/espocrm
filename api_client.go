@@ -93,7 +93,7 @@ func (client *ApiClient) List(entityType string, params *Parameters) ([]byte, er
 		return nil, err
 	}
 
-	request, err := NewRequestWithBody(client, method, endpoint, body)
+	request, err := NewRequestWithBody(client, method, endpoint, json.RawMessage(body))
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (client *ApiClient) Update(entityType, id, payload string) ([]byte, error) 
 		return nil, err
 	}
 
-	request, err := NewRequestWithBody(client, method, endpoint, body)
+	request, err := NewRequestWithBody(client, method, endpoint, json.RawMessage(body))
 	if err != nil {
 		return nil, err
 	}
@@ -132,12 +132,7 @@ func (client *ApiClient) Create(entityType, payload string) ([]byte, error) {
 	method := "POST"
 	endpoint := fmt.Sprintf("%s/%s", client.url.String(), entityType)
 
-	body, err := json.Marshal(payload)
-	if err != nil {
-		return nil, err
-	}
-
-	request, err := NewRequestWithBody(client, method, endpoint, body)
+	request, err := NewRequestWithBody(client, method, endpoint, json.RawMessage(payload))
 	if err != nil {
 		return nil, err
 	}
