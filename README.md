@@ -1,6 +1,6 @@
 ## Getting Started
 
-The `go-espocrm` package provides an API client for EspoCRM. To get started you'll have to provide the URL where EspoCRM is located and your method of authentication. Read more from the [official documentation](https://docs.espocrm.com/development/api/#authentication).
+This Go `espocrm` package provides an API client for EspoCRM. To get started you'll have to provide the URL where EspoCRM is located and your method of authentication. Read more from the [official documentation](https://docs.espocrm.com/development/api/#authentication).
 
 ### Using API Key Authentication:
 
@@ -24,15 +24,15 @@ client := espocrm.NewApiClient(
 )
 ```
 
-### Making a list GET request:
+### Making a List request:
 
 ```go
 import "github.com/definitepotato/espocrm"
 
 parameters := espocrm.NewParameters(
-    espocrm.SetWhere([]Where{
+    espocrm.SetWhere([]espocrm.Where{
         {
-            Type: Equals,
+            Type: espocrm.Equals,
             Attribute: "myAttribute",
             Value: "myValue",
         },
@@ -47,7 +47,7 @@ client := espocrm.NewApiClient(
 contacts, err := client.List("Contact", parameters)
 ```
 
-### Making a read GET request:
+### Making a Read request:
 
 ```go
 import "github.com/definitepotato/espocrm"
@@ -60,7 +60,7 @@ client := espocrm.NewApiClient(
 contact, err := client.Read("Contact", "78abc123def456")
 ```
 
-### Making a create POST request:
+### Making a Create request:
 
 ```go
 import "github.com/definitepotato/espocrm"
@@ -75,7 +75,7 @@ client := espocrm.NewApiClient(
 attributes, err := client.Create("Contact", newContact)
 ```
 
-### Making an update PUT request:
+### Making an Update request:
 
 ```go
 import "github.com/definitepotato/espocrm"
@@ -90,7 +90,7 @@ client := espocrm.NewApiClient(
 attributes, err := client.Update("Contact", updatePayload)
 ```
 
-### Making a delete DELETE request:
+### Making a Delete request:
 
 ```go
 import "github.com/definitepotato/espocrm"
