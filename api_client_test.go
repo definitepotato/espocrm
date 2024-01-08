@@ -86,14 +86,14 @@ func TestApiClientCRUD(t *testing.T) {
 			t.Errorf("%s", err)
 		}
 
-		var newEntity map[string]any
-		err = json.Unmarshal(result, &newEntity)
+		var updatedEntity map[string]any
+		err = json.Unmarshal(result, &updatedEntity)
 		if err != nil {
 			t.Errorf("%s", err)
 		}
 
-		if newEntity == nil {
-			t.Errorf("entity is empty, expected new created entity")
+		if updatedEntity == nil {
+			t.Errorf("expected an entity")
 		}
 
 		var updatePayload map[string]any
@@ -102,8 +102,8 @@ func TestApiClientCRUD(t *testing.T) {
 			t.Errorf("%s", err)
 		}
 
-		if newEntity["name"] != updatePayload["name"] {
-			t.Errorf("expected name {%v}, got name {%v}", updatePayload["name"], newEntity["name"])
+		if updatedEntity["name"] != updatePayload["name"] {
+			t.Errorf("expected name {%v}, got name {%v}", updatePayload["name"], updatedEntity["name"])
 		}
 	})
 

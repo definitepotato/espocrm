@@ -110,18 +110,7 @@ func (client *ApiClient) Update(entityType, id, payload string) ([]byte, error) 
 	method := "PUT"
 	endpoint := fmt.Sprintf("%s/%s/%s", client.url.String(), entityType, id)
 
-	var body map[string]any
-	err := json.Unmarshal([]byte(payload), &body)
-	if err != nil {
-		return nil, err
-	}
-
-	newBody, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-
-	request, err := NewRequestWithBody(client, method, endpoint, newBody)
+	request, err := NewRequestWithBody(client, method, endpoint, json.RawMessage(payload))
 	if err != nil {
 		return nil, err
 	}
