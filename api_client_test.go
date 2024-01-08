@@ -7,12 +7,6 @@ import (
 )
 
 func TestApiClient(t *testing.T) {
-	type Entity struct {
-		Id   string
-		Name string
-	}
-	E := &Entity{}
-
 	t.Run("new api client with api key", func(t *testing.T) {
 		url := os.Getenv("GOESPOCRM_URL")
 		apiKey := os.Getenv("GOESPOCRM_APIKEY")
@@ -39,16 +33,32 @@ func TestApiClient(t *testing.T) {
 			t.Errorf("got password {%v}, wanted {%v}", *client.config.password, password)
 		}
 	})
+}
+
+func TestApiClientCRUD(t *testing.T) {
+	type Entity struct {
+		Id   string
+		Name string
+	}
+	E := &Entity{}
+
+	type Client struct {
+		Url     string
+		ApiKey  string
+		Entity  string
+		Payload string
+	}
+	C := &Client{
+		Url:    os.Getenv("GOESPOCRM_URL"),
+		ApiKey: os.Getenv("GOESPOCRM_APIKEY"),
+		Entity: os.Getenv("GOESPOCRM_ENTITY"),
+	}
 
 	t.Run("create new entity", func(t *testing.T) {
-		url := os.Getenv("GOESPOCRM_URL")
-		apiKey := os.Getenv("GOESPOCRM_APIKEY")
-		entity := os.Getenv("GOESPOCRM_ENTITY")
 		payload := os.Getenv("GOESPOCRM_CREATE_ENTITY_PAYLOAD")
+		endpoint := NewApiClient(C.Url, WithApiKeyAuth(C.ApiKey))
 
-		client := NewApiClient(url, WithApiKeyAuth(apiKey))
-
-		result, err := client.Create(entity, payload)
+		result, err := endpoint.Create(C.Entity, payload)
 		if err != nil {
 			t.Errorf("%s", err)
 		}
@@ -67,15 +77,11 @@ func TestApiClient(t *testing.T) {
 		E.Name = newEntity["name"].(string)
 	})
 
-	t.Run("update existing entity", func(t *testing.T) {
-		url := os.Getenv("GOESPOCRM_URL")
-		apiKey := os.Getenv("GOESPOCRM_APIKEY")
-		entity := os.Getenv("GOESPOCRM_ENTITY")
+	t.Run("update created entity", func(t *testing.T) {
 		payload := os.Getenv("GOESPOCRM_UPDATE_ENTITY_PAYLOAD")
+		endpoint := NewApiClient(C.Url, WithApiKeyAuth(C.ApiKey))
 
-		client := NewApiClient(url, WithApiKeyAuth(apiKey))
-
-		result, err := client.Update(entity, E.Id, payload)
+		result, err := endpoint.Update(C.Entity, E.Id, payload)
 		if err != nil {
 			t.Errorf("%s", err)
 		}
@@ -90,7 +96,7 @@ func TestApiClient(t *testing.T) {
 			t.Errorf("entity is empty, expected new created entity")
 		}
 
-		var updatePayload map[string]string
+		var updatePayload map[string]any
 		err = json.Unmarshal([]byte(payload), &updatePayload)
 		if err != nil {
 			t.Errorf("%s", err)
@@ -102,13 +108,9 @@ func TestApiClient(t *testing.T) {
 	})
 
 	t.Run("read updated entity", func(t *testing.T) {
-		url := os.Getenv("GOESPOCRM_URL")
-		apiKey := os.Getenv("GOESPOCRM_APIKEY")
-		entity := os.Getenv("GOESPOCRM_ENTITY")
+		endpoint := NewApiClient(C.Url, WithApiKeyAuth(C.ApiKey))
 
-		client := NewApiClient(url, WithApiKeyAuth(apiKey))
-
-		result, err := client.Read(entity, E.Id)
+		result, err := endpoint.Read(C.Entity, E.Id)
 		if err != nil {
 			t.Errorf("%s", err)
 		}
@@ -125,13 +127,9 @@ func TestApiClient(t *testing.T) {
 	})
 
 	t.Run("delete updated entity", func(t *testing.T) {
-		url := os.Getenv("GOESPOCRM_URL")
-		apiKey := os.Getenv("GOESPOCRM_APIKEY")
-		entity := os.Getenv("GOESPOCRM_ENTITY")
+		endpoint := NewApiClient(C.Url, WithApiKeyAuth(C.ApiKey))
 
-		client := NewApiClient(url, WithApiKeyAuth(apiKey))
-
-		result, err := client.Delete(entity, E.Id)
+		result, err := endpoint.Delete(C.Entity, E.Id)
 		if err != nil {
 			t.Errorf("%s", err)
 		}
