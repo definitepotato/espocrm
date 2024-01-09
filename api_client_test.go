@@ -1,5 +1,17 @@
 package espocrm
 
+// Set the  env variables below prior to running tests, we're making
+// API calls here to make sure things work, no mocking. Run against a test
+// EspoCRM instance. The values below are examples
+//
+// GOESPOCRM_URL="https://address-of-your-espocrm"
+// GOESPOCRM_APIKEY="abc123def456"
+// GOESPOCRM_USERNAME="user"
+// GOESPOCRM_PASSWORD="pass"
+// GOESPOCRM_ENTITY="Contact"
+// GOESPOCRM_CREATE_ENTITY_PAYLOAD='{ "name": "Alice" }'
+// GOESPOCRM_UPDATE_ENTITY_PAYLOAD='{ "name": "Bob" }'
+
 import (
 	"encoding/json"
 	"os"
