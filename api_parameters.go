@@ -47,7 +47,7 @@ func SetTotal(total bool) ParamOption {
 
 type Parameters struct {
 	OrderBy     *string `json:"orderBy,omitempty"`
-	Select      *string `json:"select,omitempty"`
+	Select      *string `json:"select"`
 	Order       *Order  `json:"order,omitempty"`
 	MaxSize     *int    `json:"maxSize,omitempty"`
 	Offset      *int    `json:"offset,omitempty"`
@@ -60,6 +60,12 @@ func NewParameters(opts ...ParamOption) *Parameters {
 
 	for _, opt := range opts {
 		opt(params)
+	}
+
+	// Set select if empty.
+	if len(params.Where) > 0 && params.Select == nil {
+		var s string
+		params.Select = &s
 	}
 
 	return params
