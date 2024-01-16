@@ -134,7 +134,6 @@ func (client *ApiClient) List(entityType string, params *Parameters) ([]byte, er
 	}
 
 	client.url.RawQuery = paramValues.Encode()
-	fmt.Println(client.url.String())
 
 	request, err := NewRequest(client, method, client.url.String())
 	if err != nil {
