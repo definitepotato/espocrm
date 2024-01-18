@@ -90,7 +90,7 @@ func (client *ApiClient) List(entityType string, params *Parameters) ([]byte, er
 	paramValues := url.Values{}
 
 	if params.MaxSize != nil {
-		maxSize := fmt.Sprintf("%d", params.MaxSize)
+		maxSize := fmt.Sprintf("%v", *params.MaxSize)
 		paramValues.Add("maxSize", maxSize)
 	}
 
