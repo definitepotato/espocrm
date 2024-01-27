@@ -89,53 +89,8 @@ func (client *ApiClient) Delete(entityType, id string) ([]byte, error) {
 func (client *ApiClient) List(entityType string, params *Parameters) ([]byte, error) {
 	method := "GET"
 	client.url.Path += fmt.Sprintf("/%s", entityType)
-	paramValues := url.Values{}
 
-	if params.MaxSize != nil {
-		maxSize := fmt.Sprintf("%v", *params.MaxSize)
-		paramValues.Add("maxSize", maxSize)
-	}
-
-	if params.OrderBy != nil {
-		paramValues.Add("orderBy", *params.OrderBy)
-	}
-
-	if params.Select != nil {
-		paramValues.Add("select", *params.Select)
-	}
-
-	if params.Order != nil {
-		order := "desc"
-
-		if *params.Order == Ascending {
-			order = "asc"
-		}
-		paramValues.Add("order", order)
-	}
-
-	if params.Offset != nil {
-		offset := fmt.Sprintf("%d", params.Offset)
-		paramValues.Add("offset", offset)
-	}
-
-	if params.ReturnTotal != nil {
-		returnTotal := "false"
-
-		if *params.ReturnTotal {
-			returnTotal = "true"
-		}
-		paramValues.Add("returnTotal", returnTotal)
-	}
-
-	if params.Where != nil {
-		for i := 0; i < len(params.Where); i++ {
-			paramValues.Add("where[%d][type]=%s", string(params.Where[i].Type))
-			paramValues.Add("where[%d][attribute]=%s", params.Where[i].Attribute)
-			paramValues.Add("where[%d][value]=%s", params.Where[i].Value)
-		}
-	}
-
-	client.url.RawQuery = paramValues.Encode()
+	client.url.RawQuery = params.Encode()
 
 	request, err := NewRequest(client, method, client.url.String())
 	if err != nil {
@@ -196,53 +151,8 @@ func (client *ApiClient) Create(entityType, payload string) ([]byte, error) {
 func (client *ApiClient) ListRelated(entityType, id, relatedEntityType string, params *Parameters) ([]byte, error) {
 	method := "GET"
 	client.url.Path += fmt.Sprintf("/%s/%s/%s", entityType, id, relatedEntityType)
-	paramValues := url.Values{}
 
-	if params.MaxSize != nil {
-		maxSize := fmt.Sprintf("%v", *params.MaxSize)
-		paramValues.Add("maxSize", maxSize)
-	}
-
-	if params.OrderBy != nil {
-		paramValues.Add("orderBy", *params.OrderBy)
-	}
-
-	if params.Select != nil {
-		paramValues.Add("select", *params.Select)
-	}
-
-	if params.Order != nil {
-		order := "desc"
-
-		if *params.Order == Ascending {
-			order = "asc"
-		}
-		paramValues.Add("order", order)
-	}
-
-	if params.Offset != nil {
-		offset := fmt.Sprintf("%d", params.Offset)
-		paramValues.Add("offset", offset)
-	}
-
-	if params.ReturnTotal != nil {
-		returnTotal := "false"
-
-		if *params.ReturnTotal {
-			returnTotal = "true"
-		}
-		paramValues.Add("returnTotal", returnTotal)
-	}
-
-	if params.Where != nil {
-		for i := 0; i < len(params.Where); i++ {
-			paramValues.Add("where[%d][type]=%s", string(params.Where[i].Type))
-			paramValues.Add("where[%d][attribute]=%s", params.Where[i].Attribute)
-			paramValues.Add("where[%d][value]=%s", params.Where[i].Value)
-		}
-	}
-
-	client.url.RawQuery = paramValues.Encode()
+	client.url.RawQuery = params.Encode()
 
 	request, err := NewRequest(client, method, client.url.String())
 	if err != nil {

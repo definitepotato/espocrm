@@ -1,5 +1,10 @@
 package espocrm
 
+import (
+	"fmt"
+	"net/url"
+)
+
 type Order string
 
 const (
@@ -63,6 +68,56 @@ func NewParameters(opts ...ParamOption) *Parameters {
 	}
 
 	return params
+}
+
+func (params *Parameters) Encode() string {
+	paramValues := url.Values{}
+
+	if params.MaxSize != nil {
+		maxSize := fmt.Sprintf("%v", *params.MaxSize)
+		paramValues.Add("maxSize", maxSize)
+	}
+
+	if params.OrderBy != nil {
+		paramValues.Add("orderBy", *params.OrderBy)
+	}
+
+	if params.Select != nil {
+		paramValues.Add("select", *params.Select)
+	}
+
+	if params.Order != nil {
+		order := "desc"
+
+		if *params.Order == Ascending {
+			order = "asc"
+		}
+		paramValues.Add("order", order)
+	}
+
+	if params.Offset != nil {
+		offset := fmt.Sprintf("%d", params.Offset)
+		paramValues.Add("offset", offset)
+	}
+
+	if params.ReturnTotal != nil {
+		returnTotal := "false"
+
+		if *params.ReturnTotal {
+			returnTotal = "true"
+		}
+		paramValues.Add("returnTotal", returnTotal)
+	}
+
+	if params.Where != nil {
+		for i := 0; i < len(params.Where); i++ {
+			paramValues.Add("where[%d][type]=%s", string(params.Where[i].Type))
+			paramValues.Add("where[%d][attribute]=%s", params.Where[i].Attribute)
+			paramValues.Add("where[%d][value]=%s", params.Where[i].Value)
+		}
+	}
+
+	return paramValues.Encode()
 }
 
 type FilterType string
