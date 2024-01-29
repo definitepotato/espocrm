@@ -71,6 +71,10 @@ func NewParameters(opts ...ParamOption) *Parameters {
 }
 
 func (params *Parameters) Encode() string {
+	if params == nil {
+		return ""
+	}
+
 	paramValues := url.Values{}
 
 	if params.MaxSize != nil {
