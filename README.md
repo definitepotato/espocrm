@@ -80,6 +80,7 @@ attributes, err := client.Create("Contact", newContact)
 ```go
 import "github.com/definitepotato/espocrm"
 
+contactID := "993bdd81479dff4"
 updatePayload := `"{ assignedUserId": "1" }"`
 
 client := espocrm.NewApiClient(
@@ -87,7 +88,7 @@ client := espocrm.NewApiClient(
     espocrm.WithApiKeyAuth("Your API Key here"),
 )
 
-attributes, err := client.Update("Contact", updatePayload)
+attributes, err := client.Update("Contact", contactID, updatePayload)
 ```
 
 ### Making a Delete request:
@@ -95,10 +96,11 @@ attributes, err := client.Update("Contact", updatePayload)
 ```go
 import "github.com/definitepotato/espocrm"
 
+contactID := "78abc123def456
 client := espocrm.NewApiClient(
     "https://espocrm.example.com",
     espocrm.WithApiKeyAuth("Your API Key here"),
 )
 
-status, err := client.Delete("Contact", "78abc123def456")
+status, err := client.Delete("Contact", contactID)
 ```
