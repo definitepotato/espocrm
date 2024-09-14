@@ -96,7 +96,7 @@ attributes, err := client.Update("Contact", contactID, updatePayload)
 ```go
 import "github.com/definitepotato/espocrm"
 
-contactID := "78abc123def456
+contactID := "78abc123def456"
 client := espocrm.NewApiClient(
     "https://espocrm.example.com",
     espocrm.WithApiKeyAuth("Your API Key here"),
